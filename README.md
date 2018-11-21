@@ -1,0 +1,1 @@
+  Fetch some documents over HTTP(S), extract some data with xpath selectors and display extracted data in a nice way
