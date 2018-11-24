@@ -4,7 +4,8 @@
 <head>
     <title>fetch → extract → display</title>
     <meta name="description" content="A cool thing made with Glitch">
-    <link id="favicon" rel="icon" href="https://cdn.glitch.com/e3775294-3a28-4ee2-b3ce-c10b621f2539%2Ffavicon.png?1542681735376" type="image/png">
+    <link id="favicon" rel="icon" type="image/png"
+          href="https://cdn.glitch.com/e3775294-3a28-4ee2-b3ce-c10b621f2539%2Ffavicon.png?1542681735376">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,12 +15,6 @@
     <link rel="stylesheet" href="skeleton.css">
     <link rel="stylesheet" href="style.css">
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-
-    <!-- development version, includes helpful console warnings -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <!-- import the webpage's client-side javascript file -->
-    <script src="/client.js" defer></script>
 </head>
 
 <body>
@@ -35,22 +30,30 @@
             <fieldset>
                 <div class="row">
                     <label for="src-urls">Fetch URLs:</label>
-                    <textarea class="u-full-width" placeholder="One per line …" id="srcUrls" v-model="rawUrls"></textarea>
+                    <textarea class="u-full-width" placeholder="One per line …" 
+                              id="srcUrls" v-model="rawUrls"></textarea>
                 </div>
             </fieldset>
 
             <fieldset>
                 <legend>Extract fields:</legend>
               <div id="fields-container">
-                <data-field
-                  v-for="item in fields"
-                  v-bind:field="item"
-                  v-bind:key="item.id">
-                </data-field>
+                <div class="row">
+                  <div class="twelve columns">
+                    <div v-for="(field, index) in fields" :key="index">
+                      <input type="text" placeholder="name" 
+                             v-model="field.name">
+                      <input class="" type="text" placeholder="selector" 
+                             v-model="field.selector">
+                      <button class="button button-remove" @click.prevent="removeField(index)" 
+                              v-show="fields.length > 1">X</button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
                 <div class="row">
-                    <button class="button-primary" id="addField">Add field</button>
+                    <button class="button-primary" @click.prevent="addField">Add field</button>
                 </div>
 
             </fieldset>
@@ -64,42 +67,20 @@
             </div>
             </fieldset>
 
-            
-
             <div class="row">
               <input class="button-primary" type="submit" value="Submit">
             </div>
         </form>
     </div>
 
-    <script>
-        Vue.component('data-field', {
-            props: ['field'],
-            template: '<div class="row"><div class="twelve columns"><input type="text" placeholder="name" v-model="field.name"><input class="" type="text" placeholder="selector" v-model="field.selector"><input type="reset" value="remove" class="button"></div></div>'
-        });
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/client.js"></script>
 
-        var app = new Vue({
-            el: '#app',
-            data: {
-                rawUrls: 'https://pastebin.com/raw/ufM3vsvk',
-                fields: [{
-                    id: 0,
-                    name: 'title',
-                    selector: '//html[1]/body[1]//a[1]/text()'
-                }, {
-                    id: 1,
-                    name: 'url',
-                    selector: '//html[1]/body[1]//a[1]/@href'
-                }, ],
-                displayTemplate: ''
-            }
-        })
-    </script>
-
+    
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js"></script>
+    <script src="https://button.glitch.me/button.js" defer></script>
 
 </body>
 
