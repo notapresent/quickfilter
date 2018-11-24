@@ -1,5 +1,7 @@
 const proxyUrl = new URL('/proxy/', window.location.href).href;
 
+
+
 var app = new Vue({
   el: '#app',
   data: {  // TODO: make a button to insert example data or something
@@ -28,8 +30,8 @@ var app = new Vue({
 
     run: function run() {
       this.result = '';
-      for (let url of this.rawUrls.split("\n")) {
-        runSequential(proxyUrl, url, this.fields, this.displayTemplate)
+      for (let url of this.rawUrls.trim().split("\n")) {
+        runSequential(proxyUrl, url.trim(), this.fields, this.displayTemplate)
           .then(res => this.result = this.result + res)
           .catch(err => console.log(err));
       }
@@ -55,7 +57,9 @@ function handleFetchErrors(response) {
 }
 
 async function fetchViaProxy(proxyUrl, url, options = {}) {
-  return await fetch(proxyUrl + url, options);
+  url = proxyUrl + url;
+  console.log(`Fetching ${url}`);
+  return await fetch(url, options);
 }
 
 async function runSequential(proxyUrl, url, fields, displayTemplate) {
